@@ -246,8 +246,8 @@ if basedonvol
 end
 
 if basedonmni
-  cfg.tight       = ft_getopt(cfg.sourcemodel, 'tight',       'no');
-  cfg.nonlinear   = ft_getopt(cfg.sourcemodel, 'nonlinear',   'no');
+  cfg.tight       = ft_getopt(cfg, 'tight',       'no');
+  cfg.nonlinear   = ft_getopt(cfg, 'nonlinear',   'no');
 end
 
 % these are mutually exclusive
