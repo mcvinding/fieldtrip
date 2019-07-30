@@ -81,6 +81,7 @@ function [shape] = ft_read_headshape(filename, varargin)
 
 % get the options
 annotationfile = ft_getopt(varargin, 'annotationfile');
+useimage       = ft_getopt(varargin, 'useimage', true); % use image if hasimage
 concatenate    = ft_getopt(varargin, 'concatenate', 'yes');
 coordsys       = ft_getopt(varargin, 'coordsys', 'head');    % for ctf or neuromag_mne coil positions, the alternative is dewar
 fileformat     = ft_getopt(varargin, 'format');
@@ -198,7 +199,7 @@ end % if iscell
 
 % checks if there exists a .jpg file of 'filename'
 [pathstr,name]  = fileparts(filename);
-if exist(fullfile(pathstr,[name,'.jpg']))
+if exist(fullfile(pathstr,[name,'.jpg'])) && useimage
   image    = fullfile(pathstr,[name,'.jpg']);
   hasimage = true;
 else
@@ -787,7 +788,7 @@ switch fileformat
     shape.fid.label(1:3)= {'nas', 'lpa', 'rpa'};
     
   case 'yokogawa_hsp'
-    fid = fopen(filename, 'rt');
+    fid = fopen_or_error(filename, 'rt');
     
     fidstart = false;
     hspstart = false;
@@ -1088,7 +1089,7 @@ switch fileformat
     shape.unit = 'unkown';
     
     if exist([filename '.minf'], 'file')
-      minffid = fopen([filename '.minf']);
+      minffid = fopen_or_error([filename '.minf']);
       hdr=fgetl(minffid);
       tfm_idx = strfind(hdr,'''transformations'':') + 21;
       transform = sscanf(hdr(tfm_idx:end),'%f,',[4 4])';
@@ -1164,7 +1165,7 @@ switch fileformat
     end
     
   case 'neuromag_mesh'
-    fid = fopen(filename, 'rt');
+    fid = fopen_or_error(filename, 'rt');
     npos = fscanf(fid, '%d', 1);
     pos = fscanf(fid, '%f', [6 npos])';
     ntri = fscanf(fid, '%d', 1);

@@ -17,7 +17,7 @@ function [event] = ft_read_event(filename, varargin)
 %   'chanindx'       list with channel indices in case of different sampling frequencies (only for EDF)
 %   'trigshift'      integer, number of samples to shift from flank to detect trigger value (default = 0)
 %   'trigindx'       list with channel numbers for the trigger detection, only for Yokogawa & Ricoh (default is automatic)
-%   'triglabel'      list of channel labels for the trigger detection (default is all ADC* channels for Artinis *.oxy3 files
+%   'triglabel'      list of channel labels for the trigger detection (default is all ADC* channels for Artinis .oxy3- or .oxy4-  files)
 %   'threshold'      threshold for analog trigger channels (default is system specific)
 %   'blocking'       wait for the selected number of events (default = 'no')
 %   'timeout'        amount of time in seconds to wait when blocking (default = 5)
@@ -193,7 +193,7 @@ if strcmp(eventformat, 'brainvision_vhdr')
   if ~isfield(hdr, 'MarkerFile') || isempty(hdr.MarkerFile)
     filename = [];
   else
-    [p, f] = fileparts(filename);
+    [p, ~, ~] = fileparts(filename);
     filename = fullfile(p, hdr.MarkerFile);
   end
 end
@@ -429,10 +429,7 @@ switch eventformat
     event = read_ah5_markers(hdr, filename);
     
   case 'brainvision_vmrk'
-    fid=fopen(filename,'rt');
-    if fid==-1
-      ft_error('cannot open BrainVision marker file')
-    end
+    fid = fopen_or_error(filename,'rt');
     line = [];
     while ischar(line) || isempty(line)
       line = fgetl(fid);
@@ -590,18 +587,18 @@ switch eventformat
     % contact Robert Oostenveld if you are interested in real-time acquisition on the CTF system
     % read the events from shared memory
     event = read_shm_event(filename, varargin{:});
-        
-  case {'curry_dat', 'curry_cdt'}  
+    
+  case {'curry_dat', 'curry_cdt'}
     if isempty(hdr)
       hdr = ft_read_header(filename);
     end
     event = [];
     for i=1:size(hdr.orig.events, 2)
-        event(i).type     = 'trigger';
-        event(i).value    = hdr.orig.events(2, i);
-        event(i).sample   = hdr.orig.events(1, i);
-        event(i).offset   = hdr.orig.events(3, i)-hdr.orig.events(1, i);
-        event(i).duration = hdr.orig.events(4, i)-hdr.orig.events(1, i);
+      event(i).type     = 'trigger';
+      event(i).value    = hdr.orig.events(2, i);
+      event(i).sample   = hdr.orig.events(1, i);
+      event(i).offset   = hdr.orig.events(3, i)-hdr.orig.events(1, i);
+      event(i).duration = hdr.orig.events(4, i)-hdr.orig.events(1, i);
     end
     
   case 'dataq_wdq'
@@ -624,7 +621,11 @@ switch eventformat
     
     if ~isempty(detectflank) % parse the trigger channel (indicated by chanindx) for events
       event = read_trigger(filename, 'header', hdr, 'dataformat', dataformat, 'begsample', flt_minsample, 'endsample', flt_maxsample, 'chanindx', chanindx, 'detectflank', detectflank, 'trigshift', trigshift, 'threshold', threshold);
-    elseif issubfield(hdr, 'orig.annotation') && ~isempty(hdr.orig.annotation) % EDF itself does not contain events, but EDF+ does define an annotation channel
+    else
+      event = [];
+    end
+    
+    if issubfield(hdr, 'orig.annotation') && ~isempty(hdr.orig.annotation) % EDF itself does not contain events, but EDF+ does define an annotation channel
       % read the data of the annotation channel as 16 bit
       evt = read_edf(filename, hdr);
       % undo the faulty calibration
@@ -634,7 +635,6 @@ switch eventformat
       % construct the Time-stamped Annotations Lists (TAL), see http://www.edfplus.info/specs/edfplus.html#tal
       tal  = tokenize(char(evt), char(0), true);
       
-      event = [];
       for i=1:length(tal)
         % the unprintable characters 20 and 21 are used as separators between time, duration and the annotation
         % duration can be skipped in which case its preceding 21 must also be skipped
@@ -977,7 +977,7 @@ switch eventformat
   case 'egi_mff_v2'
     % ensure that the EGI_MFF_V2 toolbox is on the path
     ft_hastoolbox('egi_mff_v2', 1);
-
+    
     %%%%%%%%%%%%%%%%%%%%%%
     %workaround for MATLAB bug resulting in global variables being cleared
     globalTemp=cell(0);
@@ -1004,7 +1004,7 @@ switch eventformat
     end
     clear globalTemp globalList varNames varList;
     %%%%%%%%%%%%%%%%%%%%%%
-
+    
     if isunix && filename(1)~=filesep
       % add the full path to the dataset directory
       filename = fullfile(pwd, filename);
@@ -1012,7 +1012,7 @@ switch eventformat
       % add the full path, including drive letter
       filename = fullfile(pwd, filename);
     end
-
+    
     % pass the header along to speed it up, it will be read on the fly in case it is empty
     event = read_mff_event(filename, hdr);
     % clean up the fields in the event structure
@@ -1163,7 +1163,7 @@ switch eventformat
     
     if ~exist(fifo,'file')
       ft_warning('the FIFO %s does not exist; attempting to create it', fifo);
-      fid = fopen(fifo, 'r');
+      fid = fopen_or_error(fifo, 'r');
       system(sprintf('mkfifo -m 0666 %s',fifo));
     end
     
@@ -1907,7 +1907,7 @@ switch eventformat
     
   case 'nihonkohden_m00'
     % FIXME why is the flank detection not done using the generic read_trigger function?
-
+    
     event = [];
     if isempty(hdr)
       hdr = ft_read_header(filename);
@@ -1916,7 +1916,7 @@ switch eventformat
     % in the data I tested the triggers are marked as DC offsets (deactivation of the DC channel)
     event_chan = {'DC09', 'DC10', 'DC11', 'DC12'};
     trgindx = match_str(hdr.label, event_chan);
-
+    
     if isempty(trgindx)
       return
     end
@@ -2100,7 +2100,7 @@ switch eventformat
     event = read_artinis_oxy3(filename, true);
     
     if isempty(trigindx) % indx gets precedence over labels! numbers before words
-      triglabel = ft_getopt(varargin, 'triglabel', 'ADC*');  % this allows subselection of AD channels to be markes as trigger channels (for Artinis *.oxy3 data)
+      triglabel = ft_getopt(varargin, 'triglabel', 'ADC*', true);  % this allows subselection of AD channels to be markes as trigger channels (for Artinis *.oxy3 data)
       trigindx = find(ismember(hdr.label, ft_channelselection(triglabel, hdr.label)));
     end
     
@@ -2114,7 +2114,44 @@ switch eventformat
       while i<numel(trigger)
         if strcmp(trigger(i).type, trigger(i+1).type) && trigger(i+1).sample-last_trigger_sample <= tolerance
           [trigger(i).value, idx] = max([trigger(i).value, trigger(i+1).value]);
-          fprintf('Merging triggers at sample %d and %d\n', trigger(i).sample, trigger(i+1).sample);
+          last_trigger_sample =  trigger(i+1).sample;
+          if (idx==2)
+            trigger(i).sample = trigger(i+1).sample;
+          end
+          
+          trigger(i+1) = [];
+        else
+          i=i+1;
+          last_trigger_sample = trigger(i).sample;
+        end
+      end
+      
+      event = appendevent(event, trigger);
+    end
+    
+    
+  case 'artinis_oxy4'
+    ft_hastoolbox('artinis', 1);
+    if isempty(hdr)
+      hdr = read_artinis_oxy4(filename);
+    end
+    event = read_artinis_oxy4(filename, true);
+    
+    if isempty(trigindx) % indx gets precedence over labels! numbers before words
+      triglabel = ft_getopt(varargin, 'triglabel', 'ADC*', true);  % this allows subselection of AD channels to be markes as trigger channels (for Artinis *.oxy3 data)
+      trigindx = find(ismember(hdr.label, ft_channelselection(triglabel, hdr.label)));
+    end
+    
+    % read the trigger channel and do flank detection
+    trigger = read_trigger(filename, 'header', hdr, 'dataformat', dataformat, 'begsample', flt_minsample, 'endsample', flt_maxsample, 'threshold', threshold, 'chanindx', trigindx, 'detectflank', detectflank, 'trigshift', trigshift, 'fixartinis', true);
+    
+    % remove consecutive triggers
+    if ~isempty(trigger)
+      i = 1;
+      last_trigger_sample = trigger(i).sample;
+      while i<numel(trigger)
+        if strcmp(trigger(i).type, trigger(i+1).type) && trigger(i+1).sample-last_trigger_sample <= tolerance
+          [trigger(i).value, idx] = max([trigger(i).value, trigger(i+1).value]);
           last_trigger_sample =  trigger(i+1).sample;
           if (idx==2)
             trigger(i).sample = trigger(i+1).sample;
@@ -2152,10 +2189,10 @@ switch eventformat
     % 'noread' prevents reading of the spike waveforms
     % 'nosave' prevents the automatic conversion of
     % the .nev file as a .mat file
-    orig = openNEV(filename, 'noread', 'nosave')
+    orig = openNEV(filename, 'noread', 'nosave');
     
     if orig.MetaTags.SampleRes ~= 30000
-      error('sampling rate is different from 30 kHz')
+      error('sampling rate is different from 30 kHz');
       % FIXME: why would this be a problem?
     end
     
@@ -2177,27 +2214,18 @@ switch eventformat
       event(k).offset    = [];
     end
     
-  case 'biopac_acq'
-    % this one has an implementation that I guess is intended
-    % to work according to the 'otherwise' case, yet it requires
-    % a two-pass through the function, needing a header
+  case 'presentation_log'
+    event = read_presentation_log(filename);
+    
+  otherwise
+    % attempt to run "eventformat" as a function
+    % this allows the user to specify an external reading function
+    % if it fails, the regular unsupported warning message is thrown
     try
       hdr   = feval(eventformat, filename);
       event = feval(eventformat, filename, hdr);
     catch
-      ft_warning('FieldTrip:ft_read_event:unsupported_event_format','unsupported event format (%s)', eventformat);
-      event = [];
-    end
-    
-  otherwise
-    % attempt to run eventformat as a function
-    % in case using an external read function was desired, this is where it is executed
-    % if it fails, the regular unsupported warning message is thrown
-    try
-      event = feval(eventformat, filename);
-      
-    catch
-      ft_warning('FieldTrip:ft_read_event:unsupported_event_format','unsupported event format (%s)', eventformat);
+      ft_warning('FieldTrip:ft_read_event:unsupported_event_format','unsupported event format "%s"', eventformat);
       event = [];
     end
 end
@@ -2223,7 +2251,16 @@ if ~isempty(event)
   if ~isfield(event, 'duration'), for i=1:length(event), event(i).duration = []; end; end
 end
 
-% make sure that all numeric values are double
+% check whether string event values can be converted to numeric
+if ~isempty(event)
+  if all(cellfun(@ischar, {event.value})) &&  ~any(isnan(cellfun(@str2double, {event.value})))
+    for i=1:length(event)
+      event(i).value = str2double(event(i).value);
+    end
+  end
+end
+
+% make sure that all numeric values are double precision
 if ~isempty(event)
   for i=1:length(event)
     if isnumeric(event(i).value)
