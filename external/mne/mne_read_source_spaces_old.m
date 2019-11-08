@@ -142,18 +142,6 @@ return;
             error(me,'Number of vertices not found');
         end
         res.np = tag.data;
-
-        %%%My additions%%%%%%
-        tag = find_tag(this,FIFF.FIFF_MNE_SOURCE_SPACE_VOXEL_DIMS);
-        if isempty(tag)
-        res.dim=[];
-        else
-            res.dim = tag.data;
-        end
-        
-        
-        
-        %%%%%%%%
         
         tag = find_tag(this,FIFF_BEM_SURF_NTRI);
         if isempty(tag)
