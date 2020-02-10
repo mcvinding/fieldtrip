@@ -22,5 +22,5 @@ fsaverage2mni = [
   ];
 
 assert(strcmp(mri.coordsys, 'fsaverage'), 'incorrect input coordinate system ''%s''', mri.coordsys);
-mri.transform = fsaverage2mni * mri.transform;
+mri.transform = fsaverage2mni * mri.transform;  % replace with ft_transform_gemoetry
 mri.coordsys = 'mni';

@@ -116,6 +116,20 @@ if nargin>1 && ~strcmpi(target, obj.coordsys)
         otherwise
           ft_warning('conversion from %s to %s is not supported', obj.coordsys, target);
       end % switch obj.coordsys
+    case 'ctf'                  %NEW TEST
+      switch obj.coordsys
+        case {'neuromag'}
+          fprintf('TEST: not converting the coordinate system from %s to %s, these are similar enough\n', obj.coordsys, target);
+        otherwise
+          ft_warning('conversion from %s to %s is not supported', obj.coordsys, target);
+      end % switch obj.coordsys
+    case 'neuromag'             %NEW TEST
+      switch obj.coordsys
+        case {'ctf'}
+          fprintf('TEST: not converting the coordinate system from %s to %s, these are similar enough\n', obj.coordsys, target);
+        otherwise
+          ft_warning('conversion from %s to %s is not supported', obj.coordsys, target);
+      end % switch obj.coordsys
     otherwise
       ft_error('conversion from %s to %s is not supported', obj.coordsys, target);
   end % switch target

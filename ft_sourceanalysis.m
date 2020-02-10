@@ -25,7 +25,7 @@ function [source] = ft_sourceanalysis(cfg, data, baseline)
 %                    'eloreta' exact low-resolution electromagnetic tomography
 % The DICS and PCC methods are for frequency or time-frequency domain data, all other
 % methods are for time domain data. ELORETA can be used both for time, frequency and
-% time-frequency domain data.
+% time-frequency domain data.§
 %
 % The complete grid with dipole positions and optionally precomputed leadfields is
 % constructed using FT_PREPARE_SOURCEMODEL. It can be specified as as a regular 3-D
