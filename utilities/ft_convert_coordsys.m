@@ -306,17 +306,18 @@ if method>0
   if ~isfield(object, 'unit') || ~strcmp(object.unit, 'mm')
     ft_error('affine or non-linear transformation require the anatomial MRI to be expressed in mm');
   end
-  if ~any(ismember(object.coordsys, {'acpc', 'spm', 'mni', 'fsaverage', 'tal'}))
+% [! MCV: part seems to check for old unsupported coordsys. Should be
+% supported now !]
+%   if ~any(ismember(object.coordsys, {'acpc', 'spm', 'mni', 'fsaverage', 'tal'}))
     % this constraint could be relaxed if we would know that the template is expressed in another coordinate system
-    ft_error('affine or non-linear transformation is only supported for data in an SPM-like coordinate systems');
-  end
+%     ft_error('affine or non-linear transformation is only supported for data in an SPM-like coordinate systems');
+%   end
   
   % this requires SPM to be on the path. However, this is not the proper place to
   % choose between SPM versions. The user can either use cfg.spmversion in a high-level
   % function, or has to add the path to the desired SPM version by hand.
   ft_hastoolbox('spm', -1);
 end
-
 
 if method==1
   % use spm_affreg

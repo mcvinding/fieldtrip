@@ -13,7 +13,7 @@ function [normalised] = ft_volumenormalise(cfg, mri)
 %   cfg.opts        = structure with configurable normalisation options,
 %                       see spm documentation for details.
 %   cfg.template    = string, filename of the template anatomical MRI (default = 'T1.mnc'
-%                     for spm2 or 'T1.nii' for spm8)
+%                     for spm2 or 'T1.nii' for spm8)                       #[!] support struct?
 %   cfg.parameter   = cell-array with the functional data to be normalised (default = 'all')
 %   cfg.downsample  = integer number (default = 1, i.e. no downsampling)
 %   cfg.name        = string for output filename
@@ -27,6 +27,7 @@ function [normalised] = ft_volumenormalise(cfg, mri)
 %                     image allows for 'reverse-normalisation', which might come in handy
 %                     when for example a region of interest is defined on the normalised
 %                     group-average.
+%   cfg.inputcoord  = ...  # [!!! - listed as forbidden keywords??]
 %
 % To facilitate data-handling and distributed computing you can use
 %   cfg.inputfile   =  ...
@@ -118,8 +119,13 @@ if ~isfield(mri, 'anatomy')
   ft_error('no anatomical information available, this is required for normalisation');
 end
 
+% Check if input has coordsys
+% ...
+
+
 % ensure that the input MRI has interpretable units and that the input MRI is expressed in
 % a coordinate system which is in approximate agreement with the template
+
 mri  = ft_convert_units(mri, 'mm');
 orig = mri.transform;
 if isdeployed
@@ -167,7 +173,8 @@ if isempty(cfg.template)
 end
 
 % the template anatomy should always be stored in a SPM-compatible file
-template_ftype = ft_filetype(cfg.template);
+% [MCV should this be changes? - then add part where it read template and re-save or something]
+template_ftype = ft_filetype(cfg.template);  % [!! MCV error on .nii file? Related to SPM version??? !!]
 if strcmp(template_ftype, 'analyze_hdr') || strcmp(template_ftype, 'analyze_img') || strcmp(template_ftype, 'minc') || strcmp(template_ftype, 'nifti')
   % based on the filetype assume that the coordinates correspond with MNI/SPM convention
   % this is ok
@@ -206,7 +213,7 @@ else
 end
 
 % create an spm-compatible header for the anatomical volume data
-writeoptions = {'transform',mri.transform,'spmversion',cfg.spmversion};
+writeoptions = {'transform',mri.transform, 'spmversion',cfg.spmversion};
 switch ext
   case '.img'
     % nothing to be done
