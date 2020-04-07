@@ -31,7 +31,7 @@ function [output] = ft_transform_geometry(transform, input)
 %    the Free Software Foundation, either version 3 of the License, or
 %    (at your option) any later version.
 %
-%    FieldTrip is distributed in the hope that it will be useful,
+%    FieldTrip is distributed in t½½he hope that it will be useful,
 %    but WITHOUT ANY WARRANTY; without even the implied warranty of
 %    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 %    GNU General Public License for more details.

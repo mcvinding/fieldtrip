@@ -28,6 +28,7 @@ function [normalised] = ft_volumenormalise(cfg, mri)
 %                     when for example a region of interest is defined on the normalised
 %                     group-average.
 %   cfg.inputcoord  = ...  # [!!! - listed as forbidden keywords??]
+%   cfg.templatecoordsys = the coordinate system of the template (default = 'spm').
 %
 % To facilitate data-handling and distributed computing you can use
 %   cfg.inputfile   =  ...
@@ -46,7 +47,6 @@ function [normalised] = ft_volumenormalise(cfg, mri)
 %   cfg.spmparams        = one can feed in parameters from a prior normalisation
 %   cfg.spmmethod        = 'old' or 'new', to switch between the different
 %                           spm12 implementations
-%   cfg.templatecoordsys = the coordinate system of the template (default = 'spm').
 
 % Copyright (C) 2004-2014, Jan-Mathijs Schoffelen
 %
@@ -123,6 +123,16 @@ end
 % ...
 
 
+% Define default SPM tempates if empty [!!!!]
+
+if isempty(cfg.template) && strcmb(cfg.spmversion, 'spm12')
+    cfg.template = fullfile(spm('Dir'),'toolbox','OldNorm','T1.nii'); % Not sure...
+elseif isempty(cfg.template) && strcmb(cfg.spmversion, 'spm8')
+    cfg.template =  fullfile(spm('Dir'),'templates','T1.nii');
+elseif isempty(cfg.template) && strcmb(cfg.spmversion, 'spm2')
+    cfg.template = fullfile(spm('Dir'),'templates','T1.mnc');
+end
+
 % ensure that the input MRI has interpretable units and that the input MRI is expressed in
 % a coordinate system which is in approximate agreement with the template
 
@@ -131,7 +141,8 @@ orig = mri.transform;
 if isdeployed
   mri = ft_convert_coordsys(mri, cfg.templatecoordsys, 2, cfg.template);
 else
-  mri = ft_convert_coordsys(mri, cfg.templatecoordsys);
+%   mri1 = ft_convert_coordsys(mri, cfg.templatecoordsys, 2, cfg.template);
+%   mri2 = ft_convert_coordsys(mri, cfg.templatecoordsys);
 end
 % keep track of an initial transformation matrix that does the approximate co-registration
 initial = mri.transform / orig;
@@ -174,7 +185,7 @@ end
 
 % the template anatomy should always be stored in a SPM-compatible file
 % [MCV should this be changes? - then add part where it read template and re-save or something]
-template_ftype = ft_filetype(cfg.template);  % [!! MCV error on .nii file? Related to SPM version??? !!]
+template_ftype = ft_filetype(cfg.template);
 if strcmp(template_ftype, 'analyze_hdr') || strcmp(template_ftype, 'analyze_img') || strcmp(template_ftype, 'minc') || strcmp(template_ftype, 'nifti')
   % based on the filetype assume that the coordinates correspond with MNI/SPM convention
   % this is ok
@@ -194,7 +205,7 @@ else
   cfg.parameter = cfg.parameter(fliplr(indx));
 end
 
-if cfg.downsample~=1 && ~(strcmp(cfg.spmversion, 'spm12')&&strcmp(cfg.spmmethod,'new'))
+if cfg.downsample~=1 && ~(strcmp(cfg.spmversion, 'spm12') && strcmp(cfg.spmmethod,'new'))
   % optionally downsample the anatomical and/or functional volumes, this is
   % not needed when using spm12 in combination with spmmethod='new'
   tmpcfg = keepfields(cfg, {'downsample', 'parameter', 'smooth', 'showcallinfo'});

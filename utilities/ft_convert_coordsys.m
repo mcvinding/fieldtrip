@@ -447,7 +447,7 @@ elseif method==2
       if isdeployed
         if nargin<3, ft_error('you need to specify a template filename when in deployed mode and using method==2'); end
       else
-        templatefile = fullfile(spm('Dir'),'templates','T1.nii');
+%         templatefile = fullfile(spm('Dir'),'templates','T1.nii');
       end
       
     case 'spm12'
@@ -476,9 +476,9 @@ elseif method==2
   params           = spm_normalise(V2,V1,[],[],[],flags);
   
   % some juggling around with the transformation matrices
-  vox2head   = object.transform;
-  acpc2head2 = V1.mat*params.Affine/V2.mat;
-  vox2acpc2  = acpc2head2\vox2head;
+  vox2head   = object.transform;                % Voxels to head
+  acpc2head2 = V1.mat*params.Affine/V2.mat;     % Templeate coordsys to head (?)
+  vox2acpc2  = acpc2head2\vox2head;             % Voxel t o template coordsys (?)
   
   % update the transformation matrix
   object.transform = vox2acpc2;
