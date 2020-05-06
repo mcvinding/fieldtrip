@@ -200,67 +200,6 @@ end
 % these are mutually exclusive, but printing all requested methods here
 % facilitates debugging of weird configs. Also specify the defaults here to
 % keep the overview
-<<<<<<< HEAD
-if basedonfile
-  fprintf('reading sourcemodel from file\n');
-  cfg.tight       = ft_getopt(cfg, 'tight',   'no');
-end
-
-if basedonresolution
-  fprintf('creating sourcemodel based on automatic 3D grid with specified resolution\n');
-  cfg.xgrid       = ft_getopt(cfg, 'xgrid',  'auto');
-  cfg.ygrid       = ft_getopt(cfg, 'ygrid',  'auto');
-  cfg.zgrid       = ft_getopt(cfg, 'zgrid',  'auto');
-  cfg.inwardshift = ft_getopt(cfg, 'inwardshift', 0); % in this case for inside detection
-  cfg.tight       = ft_getopt(cfg, 'tight',   'yes');
-end
-
-if basedongrid
-  fprintf('creating sourcemodel based on user specified 3D grid\n');
-  cfg.inwardshift = ft_getopt(cfg, 'inwardshift', 0); % in this case for inside detection
-  cfg.tight       = ft_getopt(cfg, 'tight',   'yes');
-end
-
-if basedonpos
-  fprintf('creating sourcemodel based on user specified dipole positions\n');
-  cfg.inwardshift = ft_getopt(cfg, 'inwardshift', 0); % in this case for inside detection
-  cfg.tight       = ft_getopt(cfg, 'tight',    'no');
-end
-
-if basedonshape
-  fprintf('creating sourcemodel based on inward-shifted head shape\n');
-  cfg.inwardshift = ft_getopt(cfg, 'inwardshift',  0); % in this case for inside detection
-  cfg.spheremesh  = ft_getopt(cfg, 'spheremesh', 642);
-  cfg.tight       = ft_getopt(cfg, 'tight',    'yes');
-end
-
-if basedoncortex
-  cfg.tight       = ft_getopt(cfg, 'tight', 'yes');
-end
-
-if basedonmri
-  fprintf('creating sourcemodel based on an anatomical volume\n');
-  cfg.threshold   = ft_getopt(cfg, 'threshold', 0.1); % relative
-  cfg.smooth      = ft_getopt(cfg, 'smooth',      5); % in voxels
-  cfg.tight       = ft_getopt(cfg, 'tight',   'yes');
-end
-
-if basedonvol
-  fprintf('creating sourcemodel based on inward-shifted brain surface from volume conductor model\n');
-  cfg.inwardshift = ft_getopt(cfg, 'inwardshift',   0); % in this case for inside detection
-  cfg.spheremesh  = ft_getopt(cfg, 'spheremesh',  642);
-  cfg.tight       = ft_getopt(cfg, 'tight',      'no');
-end
-
-if basedonmni
-  cfg.tight       = ft_getopt(cfg, 'tight',       'no');
-  cfg.nonlinear   = ft_getopt(cfg, 'nonlinear',   'no');
-end
-
-% these are mutually exclusive
-if sum([basedonresolution basedongrid basedonpos basedonshape basedonmri basedonvol basedoncortex basedonmni basedonfile])~=1
-  ft_error('incorrect cfg specification for constructing a sourcemodel');
-=======
 switch cfg.method
   case 'basedonfile'
     fprintf('reading sourcemodel from file\n');
@@ -309,7 +248,6 @@ switch cfg.method
   case 'basedonmni'
     cfg.tight       = ft_getopt(cfg.sourcemodel, 'tight',       'no');
     cfg.nonlinear   = ft_getopt(cfg.sourcemodel, 'nonlinear',   'no');
->>>>>>> e7e2aa82cb291462f58f29b2dbc2c4352584775a
 end
 
 if (isfield(cfg, 'smooth') && ~strcmp(cfg.smooth, 'no')) || strcmp(cfg.method, 'basedonmni')
