@@ -338,49 +338,6 @@ else
   yyy = target;
 end
 
-<<<<<<< HEAD
-hastemplate = nargin>3;
-
-if nargin>1 && ~strcmpi(target, obj.coordsys)
-  % convert to the desired coordinate system
-  switch target
-    case 'acpc'
-      switch obj.coordsys
-        case {'ctf' 'bti' '4d'}
-          fprintf('converting the coordinate system from %s to %s\n', obj.coordsys, target);
-          if hastemplate
-            obj = align_ctf2acpc(obj, method, template);
-          else
-            obj = align_ctf2acpc(obj, method);
-          end
-        case {'itab' 'neuromag'}
-          fprintf('converting the coordinate system from %s to %s\n', obj.coordsys, target);
-          if hastemplate
-            obj = align_neuromag2acpc(obj, method, template);
-          else
-            obj = align_neuromag2acpc(obj, method);
-          end
-        case {'mni', 'fsaverage', 'spm'}
-          fprintf('not converting the coordinate system from %s to %s, these are similar enough\n', obj.coordsys, target);
-          % these are close enough to ACPC, so nothing needs to be done
-        otherwise
-          ft_warning('conversion from %s to %s is not supported', obj.coordsys, target);
-      end % switch obj.coordsys
-    case 'ctf'                  %NEW TEST
-      switch obj.coordsys
-        case {'neuromag'}
-          fprintf('TEST: not converting the coordinate system from %s to %s, these are similar enough\n', obj.coordsys, target);
-        otherwise
-          ft_warning('conversion from %s to %s is not supported', obj.coordsys, target);
-      end % switch obj.coordsys
-    case 'neuromag'             %NEW TEST
-      switch obj.coordsys
-        case {'ctf'}
-          fprintf('TEST: not converting the coordinate system from %s to %s, these are similar enough\n', obj.coordsys, target);
-        otherwise
-          ft_warning('conversion from %s to %s is not supported', obj.coordsys, target);
-      end % switch obj.coordsys
-=======
 if exist(sprintf('%s2%s', xxx, yyy), 'var')
   transform = eval(sprintf('%s2%s', xxx, yyy));
   object = ft_transform_geometry(transform, object);
@@ -503,8 +460,6 @@ elseif method==2
         end
       end
       fprintf('using ''OldNorm'' normalisation\n');
-      
->>>>>>> 1dc9895af3a00465a13d052b95680d2152195482
     otherwise
       ft_error('unsupported SPM version');
   end
