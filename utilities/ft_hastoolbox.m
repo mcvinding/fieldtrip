@@ -128,6 +128,7 @@ url = {
   'GIFTI'                                 'see http://www.artefact.tk/software/matlab/gifti'
   'GTEC'                                  'see http://www.gtec.at'
   'HOMER3'                                'see https://github.com/BUNPC/Homer3 and https://github.com/fNIRS/snirf_homer3'
+  'HEDTOOLS'                              'see https://hed-examples.readthedocs.io/en/latest/HedMatlabTools.html'
   'IBTB'                                  'see Magri et al. BMC Neurosci 2009, 10:81'
   'ICASSO'                                'see http://www.cis.hut.fi/projects/ica/icasso'
   'IMAGES'                                'see http://www.mathworks.com/products/image'  % Mathworks refers to this as IMAGES
@@ -176,6 +177,7 @@ url = {
   'RICOH_MEG_READER'                      'contact Ricoh engineers'
   'SIGNAL'                                'see http://www.mathworks.com/products/signal'
   'SIMBIO'                                'see https://www.mrt.uni-jena.de/simbio/index.php/Main_Page'
+  'SIMNIBS'                               'see http://www.simnibs.org/'
   'SON2'                                  'see http://www.kcl.ac.uk/depsta/biomedical/cfnr/lidierth.html, or contact Malcolm Lidierth'
   'SPECEST'                               'see http://www.fieldtriptoolbox.org'
   'SPIKE'                                 'see http://www.fieldtriptoolbox.org'
@@ -340,6 +342,8 @@ switch toolbox
     dependency = 'elecsfwd';
   case 'SIMBIO'
     dependency = {'calc_stiff_matrix_val', 'sb_transfer'};
+  case 'SIMNIBS'
+    dependency = {'mesh_load_gmsh4', 'mesh_save_gmsh4', 'standard_cond', 'mesh_empty'};
   case 'VGRID'
     dependency = 'vgrid';
   case 'GIFTI'
@@ -442,6 +446,8 @@ switch toolbox
     dependency = is_subdir_in_fieldtrip_path('/external/fileexchange');
   case 'HOMER3'
     dependency = {'SnirfClass' 'DataClass' 'AuxClass' 'MeasListClass' 'MetaDataTagsClass' 'ProbeClass' 'StimClass'};
+  case 'HEDTOOLS'
+    dependency = {'hed_assemble' 'getSessionInfo' 'getHostOptions'};
   case 'DUNEURO'
     dependency = {'duneuro_meeg', 'duneuro_function', 'compute_B_primary'};
   case 'OPM'

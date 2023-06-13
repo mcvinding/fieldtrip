@@ -49,7 +49,6 @@ ft_preamble init
 ft_preamble debug
 ft_preamble loadvar    mesh
 ft_preamble provenance mesh
-ft_preamble trackconfig
 
 % the ft_abort variable is set to true or false in ft_preamble_init
 if ft_abort
@@ -61,14 +60,21 @@ tmpcfg = cfg;
 tmpcfg.showcallinfo = 'no';
 tmpcfg.method = 'interactive';
 mesh = ft_defacevolume(tmpcfg, mesh);
+% remember the output rotate, scale and translate
+rotate    = mesh.cfg.rotate;
+scale     = mesh.cfg.scale;
+translate = mesh.cfg.translate;
 % restore provenance information and put back cfg.callinfo
 tmpcallinfo = cfg.showcallinfo;
 [cfg, mesh] = rollback_provenance(cfg, mesh);
+% store these in the output configuration
 cfg.showcallinfo = tmpcallinfo;
+cfg.rotate       = rotate;
+cfg.scale        = scale;
+cfg.translate    = translate;
 
 % do the general cleanup and bookkeeping at the end of the function
 ft_postamble debug
-ft_postamble trackconfig
 ft_postamble previous mesh
 ft_postamble provenance mesh
 ft_postamble history mesh

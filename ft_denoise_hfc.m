@@ -11,9 +11,9 @@ function [data] = ft_denoise_hfc(cfg,data)
 %
 % Where cfg is a configuration structure that contains:
 %   cfg.channel         = channels for HFC (default = 'all')
-% 	cfg.order           = spherical harmonic order: 
-%                           order = 1 is a homogenous field; order = 2 
-%                           includes gradients; order = 3 includes 
+% 	cfg.order           = spherical harmonic order:
+%                           order = 1 is a homogenous field; order = 2
+%                           includes gradients; order = 3 includes
 %                           quadratic terms etc. (default = 1)
 %   cfg.trials          = which trials do you want to denoise?
 %                           (default = 'all')
@@ -58,7 +58,6 @@ ft_preamble init
 ft_preamble debug
 ft_preamble loadvar    data
 ft_preamble provenance data
-ft_preamble trackconfig
 
 % the ft_abort variable is set to true or false in ft_preamble_init
 if ft_abort
@@ -101,7 +100,7 @@ data   = ft_selectdata(tmpcfg, data);
 [cfg, data] = rollback_provenance(cfg, data);
 
 % Check match between input data chans and grad chans
-[x, ~] = ismember(data.grad.label,data.label);
+[x, dummy] = ismember(data.grad.label,data.label);
 
 % Warn the user if there are chans in grad not in data
 num_mismatch = sum(x(:) == 0);
@@ -153,7 +152,7 @@ if istrue(cfg.updatesens)
 end
 
 % reorder the channels to stay close to the original ordering
-[~, selnew] = match_str(montage.labelold, data.label);
+[dummy, selnew] = match_str(montage.labelold, data.label);
 if numel(selnew)==numel(labelold)
   for i=1:numel(data.trial)
     data.trial{i} = data.trial{i}(selnew,:);
@@ -170,7 +169,6 @@ end
 
 % do the general cleanup and bookkeeping at the end of the function
 ft_postamble debug
-ft_postamble trackconfig
 ft_postamble previous   data
 ft_postamble provenance data
 ft_postamble history    data
@@ -181,7 +179,7 @@ function residual_check(residualthresh,data,oldlabels)
 % Script to determine residual variance post HFC
 
 % find corrected channels in the output data
-[~, selnew2] = match_str(oldlabels, data.label);
+[dummy, selnew2] = match_str(oldlabels, data.label);
 
 trvar = [];
 for ii = 1:numel(data.trial)
@@ -201,7 +199,7 @@ end
 
 % Identify the most common chanunit
 chanunit = ft_chanunit(data);
-[s,~,j]=unique(chanunit);
+[s,dummy,j]=unique(chanunit);
 chanunit = s{mode(j)};
 
 switch chanunit % some of this are silly, but safety first!

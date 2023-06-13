@@ -21,7 +21,7 @@ function [cfg] = ft_topoplotTFR(cfg, varargin)
 %   cfg.baseline           = 'yes','no' or [time1 time2] (default = 'no'), see FT_TIMELOCKBASELINE or FT_FREQBASELINE
 %   cfg.baselinetype       = 'absolute' or 'relative' (default = 'absolute')
 %   cfg.trials             = 'all' or a selection given as a 1xN vector (default = 'all')
-%   cfg.colormap           = string, or Nx3 matrix, see FT_COLORMAP 
+%   cfg.colormap           = string, or Nx3 matrix, see FT_COLORMAP
 %   cfg.marker             = 'on', 'labels', 'numbers', 'off'
 %   cfg.markersymbol       = channel marker symbol (default = 'o')
 %   cfg.markercolor        = channel marker color (default = [0 0 0] (black))
@@ -44,17 +44,19 @@ function [cfg] = ft_topoplotTFR(cfg, varargin)
 %                            'SouthOutside'       outside bottom
 %                            'EastOutside'        outside right
 %                            'WestOutside'        outside left
-%   cfg.colorbartext       =  string indicating the text next to colorbar
+%   cfg.colorbartext       = string indicating the text next to colorbar
 %   cfg.interplimits       = limits for interpolation (default = 'head')
-%                            'electrodes' to furthest electrode
-%                            'head' to edge of head
+%                            'electrodes'         to furthest electrode
+%                            'head'               to edge of head
 %   cfg.interpolation      = 'linear','cubic','nearest','v4' (default = 'v4') see GRIDDATA
 %   cfg.style              = plot style (default = 'both')
-%                            'straight' colormap only
-%                            'contour' contour lines only
-%                            'both' (default) both colormap and contour lines
-%                            'fill' constant color between lines
-%                            'blank' only the head shape
+%                            'straight'           colormap only
+%                            'contour'            contour lines only
+%                            'both'               both colormap and contour lines
+%                            'fill'               constant color between lines
+%                            'blank'              only the head shape
+%                            'straight_imsat'     colormap only, vector-graphics friendly
+%                            'both_imsat'         both colormap and contour lines, vector-graphics friendly
 %   cfg.gridscale          = scaling grid size (default = 67)
 %                            determines resolution of figure
 %   cfg.shading            = 'flat' or 'interp' (default = 'flat')
@@ -182,7 +184,6 @@ ft_preamble init
 ft_preamble debug
 ft_preamble loadvar varargin
 ft_preamble provenance varargin
-ft_preamble trackconfig
 
 % the ft_abort variable is set to true or false in ft_preamble_init
 if ft_abort
@@ -205,7 +206,7 @@ cfg.funcname = mfilename;
 cfg.dataname = dataname;
 
 % prepare the layout, this should be done only once
-tmpcfg = keepfields(cfg, {'layout', 'channel', 'rows', 'columns', 'commentpos', 'skipcomnt', 'scalepos', 'skipscale', 'projection', 'viewpoint', 'rotate', 'width', 'height', 'elec', 'grad', 'opto', 'showcallinfo', 'trackcallinfo', 'trackconfig', 'trackusage', 'trackdatainfo', 'trackmeminfo', 'tracktimeinfo'});
+tmpcfg = keepfields(cfg, {'layout', 'channel', 'rows', 'columns', 'commentpos', 'skipcomnt', 'scalepos', 'skipscale', 'projection', 'viewpoint', 'rotate', 'width', 'height', 'elec', 'grad', 'opto', 'showcallinfo', 'trackcallinfo', 'trackusage', 'trackdatainfo', 'trackmeminfo', 'tracktimeinfo', 'checksize'});
 cfg.layout = ft_prepare_layout(tmpcfg, varargin{1});
 
 % call the common function that is shared between ft_topoplotER and ft_topoplotTFR
@@ -216,7 +217,6 @@ cfg = removefields(cfg, 'funcname');
 
 % do the general cleanup and bookkeeping at the end of the function
 ft_postamble debug
-ft_postamble trackconfig
 ft_postamble previous varargin
 ft_postamble provenance
 ft_postamble savefig

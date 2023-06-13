@@ -97,6 +97,7 @@ function [data] = ft_preprocessing(cfg, data)
 % Preprocessing options that only apply to MEG data are
 %   cfg.coordsys      = string, 'head' or 'dewar' (default = 'head')
 %   cfg.coilaccuracy  = can be empty or a number (0, 1 or 2) to specify the accuracy (default = [])
+%   cfg.coildeffile   = can be empty or a string to a custom coil_def.dat file (default = [])
 %
 % Preprocessing options that you should only use for EEG data are
 %   cfg.reref         = 'no' or 'yes' (default = 'no')
@@ -170,7 +171,6 @@ ft_preamble init
 ft_preamble debug
 ft_preamble loadvar data
 ft_preamble provenance data
-ft_preamble trackconfig
 
 % the ft_abort variable is set to true or false in ft_preamble_init
 if ft_abort
@@ -222,6 +222,7 @@ headeropt  = ft_setopt(headeropt, 'headerformat',   ft_getopt(cfg, 'headerformat
 headeropt  = ft_setopt(headeropt, 'readbids',       ft_getopt(cfg, 'readbids'));            % is passed to low-level function
 headeropt  = ft_setopt(headeropt, 'coordsys',       ft_getopt(cfg, 'coordsys', 'head'));    % is passed to low-level function
 headeropt  = ft_setopt(headeropt, 'coilaccuracy',   ft_getopt(cfg, 'coilaccuracy'));        % is passed to low-level function
+headeropt  = ft_setopt(headeropt, 'coildeffile',    ft_getopt(cfg, 'coildeffile'));         % is passed to low-level function
 headeropt  = ft_setopt(headeropt, 'checkmaxfilter', ft_getopt(cfg, 'checkmaxfilter'));      % this allows to read non-maxfiltered neuromag data recorded with internal active shielding
 headeropt  = ft_setopt(headeropt, 'chantype',       ft_getopt(cfg, 'chantype', {}));        % 2017.10.10 AB required for NeuroOmega files
 
@@ -313,7 +314,7 @@ if hasdata
   cfg.trials = ft_getopt(cfg, 'trials', 'all', 1);
 
   % select trials of interest
-  tmpcfg = keepfields(cfg, {'trials', 'channel', 'latency', 'tolerance', 'showcallinfo', 'trackcallinfo', 'trackconfig', 'trackusage', 'trackdatainfo', 'trackmeminfo', 'tracktimeinfo'});
+  tmpcfg = keepfields(cfg, {'trials', 'channel', 'latency', 'tolerance', 'showcallinfo', 'trackcallinfo', 'trackusage', 'trackdatainfo', 'trackmeminfo', 'tracktimeinfo', 'checksize'});
   data   = ft_selectdata(tmpcfg, data);
   % restore the provenance information
   [cfg, data] = rollback_provenance(cfg, data);
@@ -696,7 +697,6 @@ end % if updatesens
 
 % do the general cleanup and bookkeeping at the end of the function
 ft_postamble debug
-ft_postamble trackconfig
 ft_postamble previous data
 
 % rename the output variable to accomodate the savevar postamble

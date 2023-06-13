@@ -24,7 +24,7 @@ function [cfg] = ft_topoplotER(cfg, varargin)
 %   cfg.baseline           = 'yes','no' or [time1 time2] (default = 'no'), see FT_TIMELOCKBASELINE or FT_FREQBASELINE
 %   cfg.baselinetype       = 'absolute' or 'relative' (default = 'absolute')
 %   cfg.trials             = 'all' or a selection given as a 1xN vector (default = 'all')
-%   cfg.colormap           = string, or Nx3 matrix, see FT_COLORMAP 
+%   cfg.colormap           = string, or Nx3 matrix, see FT_COLORMAP
 %   cfg.marker             = 'on', 'labels', 'numbers', 'off'
 %   cfg.markersymbol       = channel marker symbol (default = 'o')
 %   cfg.markercolor        = channel marker color (default = [0 0 0] (black))
@@ -48,7 +48,7 @@ function [cfg] = ft_topoplotER(cfg, varargin)
 %                            'SouthOutside'       outside bottom
 %                            'EastOutside'        outside right
 %                            'WestOutside'        outside left
-%   cfg.colorbartext       =  string indicating the text next to colorbar
+%   cfg.colorbartext       = string indicating the text next to colorbar
 %   cfg.interplimits       = limits for interpolation (default = 'head')
 %                            'electrodes'         to furthest electrode
 %                            'head'               to edge of head
@@ -58,9 +58,10 @@ function [cfg] = ft_topoplotER(cfg, varargin)
 %                            'contour'            contour lines only
 %                            'both'               both colormap and contour lines
 %                            'fill'               constant color between lines
-%                            'blank'               only the head shape
-%   cfg.gridscale          = scaling grid size (default = 67)
-%                            determines resolution of figure
+%                            'blank'              only the head shape
+%                            'straight_imsat'     colormap only, vector-graphics friendly
+%                            'both_imsat'         both colormap and contour lines, vector-graphics friendly
+%   cfg.gridscale          = scaling grid size that determines resolution of figure (default = 67)
 %   cfg.shading            = 'flat' or 'interp' (default = 'flat')
 %   cfg.comment            = 'no', 'auto' or 'xlim' (default = 'auto')
 %                            'auto': date, xparam and zparam limits are printed
@@ -79,10 +80,9 @@ function [cfg] = ft_topoplotER(cfg, varargin)
 %                            node, or the outflow from a node is plotted. The
 %                            (default) behavior of this option depends on the dimord
 %                            of the input data (see below).
-%   cfg.layout             = specify the channel layout for plotting using one of
-%                            the supported ways (see below).
-%   cfg.interpolatenan     = string 'yes', 'no' (default = 'yes')
-%                            interpolate over channels containing NaNs
+%   cfg.layout             = specify the channel layout for plotting using one of the supported ways (see below).
+%   cfg.interpolatenan     = 'yes' or 'no', whether to interpolate over channels containing NaNs (default = 'yes')
+%   cfg.figure             = 'yes' or 'no', whether to open a new figure. You can also specify a figure handle from FIGURE, GCF or SUBPLOT. (default = 'yes')
 %
 % For the plotting of directional connectivity data the cfg.directionality option
 % determines what is plotted. The default value and the supported functionality
@@ -176,7 +176,6 @@ ft_preamble init
 ft_preamble debug
 ft_preamble loadvar varargin
 ft_preamble provenance varargin
-ft_preamble trackconfig
 
 % the ft_abort variable is set to true or false in ft_preamble_init
 if ft_abort
@@ -199,7 +198,7 @@ cfg.funcname = mfilename;
 cfg.dataname = dataname;
 
 % prepare the layout, this should be done only once
-tmpcfg = keepfields(cfg, {'layout', 'channel', 'rows', 'columns', 'commentpos', 'skipcomnt', 'scalepos', 'skipscale', 'projection', 'viewpoint', 'rotate', 'width', 'height', 'elec', 'grad', 'opto', 'linecolor', 'showcallinfo', 'trackcallinfo', 'trackconfig', 'trackusage', 'trackdatainfo', 'trackmeminfo', 'tracktimeinfo'});
+tmpcfg = keepfields(cfg, {'layout', 'channel', 'rows', 'columns', 'commentpos', 'skipcomnt', 'scalepos', 'skipscale', 'projection', 'viewpoint', 'rotate', 'width', 'height', 'elec', 'grad', 'opto', 'linecolor', 'showcallinfo', 'trackcallinfo', 'trackusage', 'trackdatainfo', 'trackmeminfo', 'tracktimeinfo', 'checksize'});
 cfg.layout = ft_prepare_layout(tmpcfg, varargin{1});
 
 % call the common function that is shared between ft_topoplotER and ft_topoplotTFR
@@ -210,7 +209,6 @@ cfg = removefields(cfg, 'funcname');
 
 % do the general cleanup and bookkeeping at the end of the function
 ft_postamble debug
-ft_postamble trackconfig
 ft_postamble previous varargin
 ft_postamble provenance
 ft_postamble savefig

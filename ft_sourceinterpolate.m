@@ -99,7 +99,6 @@ ft_preamble init
 ft_preamble debug
 ft_preamble loadvar functional anatomical
 ft_preamble provenance functional anatomical
-ft_preamble trackconfig
 
 % the ft_abort variable is set to true or false in ft_preamble_init
 if ft_abort
@@ -171,7 +170,7 @@ else
   functional = ft_checkdata(functional, 'datatype', 'volume', 'insidestyle', 'logical', 'feedback', 'yes', 'hasunit', 'yes');
 end
 
-% select the parameters from the data, this needs to be done here, because after running checkdata, the parameterselection fails if the numeric data has nfreq/ntime/etc>1 
+% select the parameters from the data, this needs to be done here, because after running checkdata, the parameterselection fails if the numeric data has nfreq/ntime/etc>1
 cfg.parameter = parameterselection(cfg.parameter, functional);
 
 % ensure that the functional data has the same unit as the anatomical data
@@ -185,7 +184,7 @@ end
 
 if ~isUnstructuredAna && cfg.downsample~=1
   % downsample the anatomical volume
-  tmpcfg = keepfields(cfg, {'downsample', 'showcallinfo', 'trackcallinfo', 'trackconfig', 'trackusage', 'trackdatainfo', 'trackmeminfo', 'tracktimeinfo'});
+  tmpcfg = keepfields(cfg, {'downsample', 'showcallinfo', 'trackcallinfo', 'trackusage', 'trackdatainfo', 'trackmeminfo', 'tracktimeinfo', 'checksize'});
   tmpcfg.parameter = 'anatomy';
   anatomical = ft_volumedownsample(tmpcfg, anatomical);
   % restore the provenance information and put back cfg.parameter
@@ -622,7 +621,7 @@ elseif ~isUnstructuredFun && ~isUnstructuredAna
           allav(:,:,:,k,m) = av;
         end
       end
-      if isfield(interp, 'freq') || isfield(interp, 'time')
+      if (isfield(interp, 'freq') && numel(interp.freq)>1) || (isfield(interp, 'time') && numel(interp.time)>1)
         % the output should be a source representation, not a volume
         allav = reshape(allav, prod(anatomical.dim), dimf(4), dimf(5));
       end
@@ -665,7 +664,6 @@ end
 
 % do the general cleanup and bookkeeping at the end of the function
 ft_postamble debug
-ft_postamble trackconfig
 ft_postamble previous   functional anatomical
 ft_postamble provenance interp
 ft_postamble history    interp
