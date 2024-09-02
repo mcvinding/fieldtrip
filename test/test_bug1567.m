@@ -1,8 +1,9 @@
 function test_bug1567
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY
+% DATA private
 
 fileloc = dccnpath('/home/common/matlab/fieldtrip/data/test/bug1567/');
 

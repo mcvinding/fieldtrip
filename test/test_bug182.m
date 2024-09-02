@@ -1,8 +1,9 @@
 function test_bug182
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_preprocessing ft_componentanalysis ft_rejectcomponent ft_componentbrowser ft_databrowser
+% DATA private
 
 % this script addresses bug 182.
 % applying ft_componentanalysis and reconstructing the data with

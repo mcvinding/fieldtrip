@@ -1,7 +1,8 @@
 function test_example_megrealign
 
-% MEM 6gb
+% MEM 4gb
 % WALLTIME 00:10:00
+% DATA public
 
 %
 %% Interpolating data from the CTF151 to the CTF275 sensor array using megrealign

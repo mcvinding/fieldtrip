@@ -1,8 +1,9 @@
 function test_bug1530
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_sourceplot
+% DATA private
 
 % The problem: apparently ft_sourceplot fails on parameterselection
 load(dccnpath('/home/common/matlab/fieldtrip/data/test/bug1530/cfg_sourceDiffIntNorm.mat'));

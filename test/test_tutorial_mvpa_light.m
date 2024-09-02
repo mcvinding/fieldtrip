@@ -1,8 +1,9 @@
 function test_tutorial_mvpa_light
 
-% MEM 12gb
+% MEM 10gb
 % WALLTIME 01:00:00
 % DEPENDENCY ft_timelockstatisitcs ft_statistics_mvpa
+% DATA public
 
 %
 %% Classification of event related MEG data using MVPA-Light

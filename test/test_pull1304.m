@@ -1,8 +1,9 @@
 function test_pull1304
 
 % WALLTIME 00:10:00
-% MEM 3gb
+% MEM 1gb
 % DEPENDENCY ft_connectivityanalysis ft_connectivity_corr
+% DATA private
 
 %%
 

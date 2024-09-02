@@ -1,7 +1,8 @@
 function test_example_effectsize
 
-% MEM 8gb
+% MEM 6gb
 % WALLTIME 00:20:00
+% DATA public
 
 %
 %% Computing and reporting the effect size

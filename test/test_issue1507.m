@@ -1,8 +1,9 @@
 function test_issue1507
 
 % WALLTIME 00:20:00
-% MEM 4gb
+% MEM 2gb
 % DEPENDENCY ft_multiplotER ft_singleplotER ft_selectdata
+% DATA public
 
 
 datadir = dccnpath('/home/common/matlab/fieldtrip/data/ftp/tutorial/eventrelatedaveraging');

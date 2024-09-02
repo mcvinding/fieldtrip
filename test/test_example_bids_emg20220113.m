@@ -1,7 +1,8 @@
 function test_example_bids_emg
 
-% MEM 4gb
+% MEM 2gb
 % WALLTIME 00:20:00
+% DATA public
 
 %% Converting an example EMG dataset for sharing in BIDS
 %

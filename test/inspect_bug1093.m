@@ -1,6 +1,9 @@
 function inspect_bug1093
 
+% WALLTIME 00:10:00
+% MEM 1gb
 % DEPENDENCY ft_artifact_zvalue
+% DATA private
 
 % the original bug was that ft_artifact_zvalue does not adjust the detected
 % artifacts when the threshold is adjusted

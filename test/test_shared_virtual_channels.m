@@ -1,8 +1,9 @@
 function test_shared_virtual_channels
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_timelockanalysis ft_sourceanalysis ft_channelselection ft_databrowser
+% DATA public
 
 load(dccnpath('/home/common/matlab/fieldtrip/data/ftp/tutorial/beamformingextended/hdm.mat'));
 load(dccnpath('/home/common/matlab/fieldtrip/data/ftp/tutorial/beamformingextended/source_diff.mat'));

@@ -1,9 +1,10 @@
 function test_old_ft_topoplotTFR
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:20:00
 
 % DEPENDENCY_FT_TOPOPLOTTFR
+% DATA private
 % This script tests the ft_topoplotTFR function and should display a figure
 % with the ctf275 layout showing power decreases at the parietal lobes
 

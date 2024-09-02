@@ -1,8 +1,9 @@
 function test_bug3353
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_sourceparcellate test_bug3353
+% DATA private
 
 %% file path
 datapath = dccnpath('/home/common/matlab/fieldtrip/data/test/');

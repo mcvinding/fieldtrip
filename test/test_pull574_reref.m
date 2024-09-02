@@ -1,8 +1,9 @@
 function test_pull574_reref
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 01:00:00
 % DEPENDENCY ft_preprocessing preproc ft_preproc_reference
+% DATA private
 
 % test the ft_preprocessing for re-referencing to rest
 % Li Dong $ 2020.3.10, (Lidong@uestc.edu.cn) and J.M.Schoffelen

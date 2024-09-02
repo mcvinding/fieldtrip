@@ -1,8 +1,9 @@
 function test_issue2221
 
 % WALLTIME 00:10:00
-% MEM 3gb
+% MEM 1gb
 % DEPENDENCY read_biosemi_bdf
+% DATA private
 
 filename = dccnpath('/home/common/matlab/fieldtrip/data/test/issue2221.bdf');
 

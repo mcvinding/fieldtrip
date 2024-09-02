@@ -1,8 +1,9 @@
 function test_bug1754
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_freqbaseline
+% DATA private
 
 % Note: new tests were added when bug #1754 was fixed. This script is now
 % reduntant, and can be removed.

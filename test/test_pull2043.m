@@ -1,8 +1,9 @@
 function test_pull2043
 
 % WALLTIME 00:20:00
-% MEM 3gb
+% MEM 1gb
 % DEPENDENCY data2bids
+% DATA private
 
 global ft_default
 ft_default.dccnpath = '/Volumes/SamsungT7/fieldtrip';

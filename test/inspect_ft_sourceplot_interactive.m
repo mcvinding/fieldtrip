@@ -1,8 +1,9 @@
 function inspect_ft_sourceplot_interactive
 
-% MEM 8gb
+% MEM 6gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_sourceplot_interactive ft_plot_mesh_interactive
+% DATA public
 
 %% load first dataset: results from MNE tutorial
 

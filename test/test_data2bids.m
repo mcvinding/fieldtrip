@@ -1,8 +1,9 @@
 function test_data2bids
 
 % WALLTIME 00:20:00
-% MEM 5gb
+% MEM 4gb
 % DEPENDENCY data2bids
+% DATA private
 
 %% Example with only behavioural data
 cd(dccnpath('/home/common/matlab/fieldtrip/data/test/data2bids/test1'))

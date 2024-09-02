@@ -1,8 +1,9 @@
 function test_bug1856
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:20:00
 % DEPENDENCY ft_read_header ft_read_sens ft_chanunits
+% DATA private
 
 % make sure that grad.chanunit and hdr.chanunit are specified for the most
 % common MEG systems, biosemi, brainvision and egi

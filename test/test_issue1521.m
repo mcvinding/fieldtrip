@@ -1,8 +1,9 @@
 function test_issue1521
 
-% MEM 4gb
+% MEM 2gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_combineplanar svdfft ft_dipolesimulation
+% DATA private
 
 load(dccnpath('/home/common/matlab/fieldtrip/data/test/issue1521.mat'));
 

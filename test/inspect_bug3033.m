@@ -1,6 +1,9 @@
 function inspect_bug3033
 
+% WALLTIME 00:10:00
+% MEM 1gb
 % DEPENDENCY ft_plot_topo ft_databrowser ft_topoplotER
+% DATA private
 
 cd(dccnpath('/home/common/matlab/fieldtrip/data/test/bug3033'));
 

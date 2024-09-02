@@ -1,8 +1,9 @@
 function test_tutorial_headmodel_eeg_fem
 
-% WALLTIME 08:00:00
-% MEM 12gb
+% WALLTIME 01:00:00
+% MEM 10gb
 % DEPENDENCY ft_prepare_headmodel ft_prepare_mesh ft_datatype_segmentation
+% DATA public
 
 mri = ft_read_mri(dccnpath('/home/common/matlab/fieldtrip/data/ftp/test/ctf/Subject01.mri'));
 

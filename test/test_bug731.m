@@ -1,8 +1,9 @@
 function test_bug731
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY
+% DATA private
 
 % this function checks problems encountered with the neuromag digital trigger reading
 

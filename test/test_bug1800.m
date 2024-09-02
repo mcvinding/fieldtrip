@@ -1,8 +1,9 @@
 function test_bug1800
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_defaults ft_selectdata ft_topoplotER
+% DATA private
 
 % this was reported by Giorgos Michalareas
 %

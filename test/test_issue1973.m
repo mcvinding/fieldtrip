@@ -1,8 +1,9 @@
 function test_issue1973
 
 % WALLTIME 00:10:00
-% MEM 4gb
+% MEM 2gb
 % DEPENDENCY ft_statfun_actvsblT
+% DATA private
 
 load(dccnpath('/home/common/matlab/fieldtrip/data/test/issue1973.mat'));
 

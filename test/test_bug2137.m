@@ -1,8 +1,9 @@
 function test_bug2137
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:30:00
 % DEPENDENCY
+% DATA public
 
 
 % the following lines are for interactive/manual testing

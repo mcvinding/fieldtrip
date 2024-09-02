@@ -1,8 +1,9 @@
 %function test_ft_eventtiminganalysis
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:15:00
 % DEPENDENCY ft_eventtiminganalysis
+% DATA private
 
 load(dccnpath('/home/common/matlab/fieldtrip/data/test/test_ft_eventtiminganalysis.mat'));
 ft_hastoolbox('lagextraction', 1);

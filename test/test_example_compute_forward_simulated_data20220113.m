@@ -1,7 +1,8 @@
 function test_example_compute_forward_simulated_data
 
-% MEM 4gb
+% MEM 2gb
 % WALLTIME 00:10:00
+% DATA no
 
 %
 %% Compute forward simulated data using ft_dipolesimulation

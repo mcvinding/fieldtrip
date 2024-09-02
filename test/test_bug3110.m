@@ -1,8 +1,9 @@
 function test_bug3110
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY
+% DATA private
 
 % this functions tests the behavior of ft_redefinetrial with comp input
 

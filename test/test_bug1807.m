@@ -1,8 +1,9 @@
 function test_bug1807
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_senstype bti2grad ft_datatype_sens ft_read_header ft_read_sens
+% DATA private
 
 dataset = dccnpath('/home/common/matlab/fieldtrip/data/test/original/meg/bti248grad/e,rfhp1.0Hz,COH');
 

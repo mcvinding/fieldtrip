@@ -1,8 +1,9 @@
 function test_issue840
 
 % WALLTIME 00:10:00
-% MEM 2gb
+% MEM 1gb
 % DEPENDENCY ft_megplanar ft_combineplanar ft_appenddata
+% DATA private
 
 %%
 

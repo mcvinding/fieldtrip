@@ -1,8 +1,9 @@
 function test_bug3188
 
 % WALLTIME 00:30:00
-% MEM 8gb
+% MEM 6gb
 % DEPENDENCY ft_connectivityanalysis
+% DATA private
 
 %%
 

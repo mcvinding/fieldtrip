@@ -1,8 +1,9 @@
 function test_issue1632
 
-% MEM 4gb
+% MEM 2gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_compute_leadfield
+% DATA private
 
 % https://github.com/fieldtrip/fieldtrip/issues/1632
 % This script will demonstrate that with ft_prepare leadfields, the

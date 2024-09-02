@@ -1,8 +1,9 @@
 function test_bug3441
 
-% MEM 4gb
+% MEM 2gb
 % WALLTIME 00:20:00
 % DEPENDENCY loadcnt
+% DATA private
 
 cd(dccnpath('/home/common/matlab/fieldtrip/data/test/bug3441'));
 

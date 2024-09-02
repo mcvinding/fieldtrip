@@ -1,7 +1,8 @@
 function test_issue623
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:20:00
+% DATA private
 % DEPENCENCY
 
 %%

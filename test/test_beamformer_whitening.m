@@ -1,8 +1,9 @@
 function test_beamformer_whitening
 
 % WALLTIME 03:00:00
-% MEM 8gb
+% MEM 6gb
 % DEPENDENCY ft_denoise_prewhiten ft_sourceanalysis
+% DATA private
 
 % this function tests the functionality of running a beamformer analysis on
 % spatially whitened data. TODO: at the moment - just to be safe - the mags

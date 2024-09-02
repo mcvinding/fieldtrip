@@ -1,8 +1,9 @@
 function test_bug1756
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_headmodeltype ft_prepare_headmodel ft_headmodel_openmeeg
+% DATA private
 
 cd(dccnpath('/home/common/matlab/fieldtrip/data/test/bug1756'));
 

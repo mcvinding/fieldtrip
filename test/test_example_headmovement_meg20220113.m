@@ -1,7 +1,8 @@
 function test_example_headmovement_meg
 
-% MEM 4gb
+% MEM 2gb
 % WALLTIME 00:10:00
+% DATA public
 
 %
 %% How to incorporate head movements in MEG analysis

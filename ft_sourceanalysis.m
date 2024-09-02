@@ -10,8 +10,8 @@ function [source] = ft_sourceanalysis(cfg, data, baseline)
 %
 % where the second input argument with the data should be organised in a structure
 % as obtained from the FT_FREQANALYSIS or FT_TIMELOCKANALYSIS function. The
-% configuration "cfg" is a structure containing information about source positions
-% and other options.
+% configuration "cfg" is a structure containing the specification of the head model,
+% the source model, and other options.
 %
 % The different source reconstruction algorithms that are implemented are
 %   cfg.method     = 'lcmv'    linear constrained minimum variance beamformer
@@ -71,8 +71,9 @@ function [source] = ft_sourceanalysis(cfg, data, baseline)
 %   cfg.numpermutation     = number, e.g. 500 or 'all'
 %
 % If you have not specified a sourcemodel with pre-computed leadfields, the leadfield
-% for each source position will be computed on the fly. In that case you can modify
-% the leadfields by reducing the rank (i.e. remove the weakest orientation), or by
+% for each source position will be computed on the fly, in the lower level function that
+% is called for the heavy lifting. In that case you can modify parameters for the forward
+% computation, e.g. by reducing the rank (i.e. remove the weakest orientation), or by
 % normalizing each column.
 %   cfg.reducerank      = 'no', or number (default = 3 for EEG, 2 for MEG)
 %   cfg.backproject     = 'yes' or 'no',  determines when reducerank is applied whether the
@@ -87,20 +88,24 @@ function [source] = ft_sourceanalysis(cfg, data, baseline)
 %   cfg.channel       = Nx1 cell-array with selection of channels (default = 'all'), see FT_CHANNELSELECTION for details
 %   cfg.frequency     = single number (in Hz)
 %   cfg.latency       = single number in seconds, for time-frequency analysis
-%   cfg.lambda        = number or empty for automatic default
-%   cfg.kappa         = number or empty for automatic default
-%   cfg.tol           = number or empty for automatic default
 %   cfg.refchan       = reference channel label (for coherence)
 %   cfg.refdip        = reference dipole location (for coherence)
 %   cfg.supchan       = suppressed channel label(s)
 %   cfg.supdip        = suppressed dipole location(s)
 %   cfg.keeptrials    = 'no' or 'yes'
 %   cfg.keepleadfield = 'no' or 'yes'
-%   cfg.projectnoise  = 'no' or 'yes'
-%   cfg.keepfilter    = 'no' or 'yes'
-%   cfg.keepcsd       = 'no' or 'yes'
-%   cfg.keepmom       = 'no' or 'yes'
-%   cfg.feedback      = 'no', 'text', 'textbar', 'gui' (default = 'text')
+%
+% Some options need to be specified as method specific options, and determine the low-level computation of the inverse operator.
+% The functionality (and applicability) of the (sub-)options are documented in the lower-level ft_inverse_<method> functions. 
+% Replace <method> with one of the supported methods.  
+%   cfg.<method>.lambda        = number or empty for automatic default
+%   cfg.<method>.kappa         = number or empty for automatic default
+%   cfg.<method>.tol           = number or empty for automatic default
+%   cfg.<method>.projectnoise  = 'no' or 'yes'
+%   cfg.<method>.keepfilter    = 'no' or 'yes'
+%   cfg.<method>.keepcsd       = 'no' or 'yes'
+%   cfg.<method>.keepmom       = 'no' or 'yes'
+%   cfg.<method>.feedback      = 'no', 'text', 'textbar', 'gui' (default = 'text')
 %
 % The volume conduction model of the head should be specified as
 %   cfg.headmodel     = structure with volume conduction model, see FT_PREPARE_HEADMODEL
@@ -124,7 +129,7 @@ function [source] = ft_sourceanalysis(cfg, data, baseline)
 % cfg.numcomponents
 % cfg.refchannel
 % cfg.trialweight   = 'equal' or 'proportional'
-% cfg.powmethod     = 'lambda1' or 'trace'
+% cfg.<method>.powmethod     = 'lambda1' or 'trace'
 
 % Copyright (c) 2003-2008, F.C. Donders Centre, Robert Oostenveld
 %
@@ -388,7 +393,7 @@ if ~isempty(cfg.refdip) || ~isempty(cfg.supdip)
   
 elseif isfield(cfg.sourcemodel, 'filter')
   ft_notice('using precomputed filters, not computing any leadfields');
-  sourcemodel = keepfields(cfg.sourcemodel, {'pos', 'tri', 'dim', 'inside', 'filter', 'filterdimord', 'label', 'cfg'});
+  sourcemodel = keepfields(cfg.sourcemodel, {'pos', 'tri', 'dim', 'unit', 'coordsys', 'inside', 'filter', 'filterdimord', 'label', 'cfg'});
   
   if ~isfield(sourcemodel, 'label')
     ft_warning('the labels are missing for the precomputed filters, assuming that they were computed with the same channel selection');
@@ -423,7 +428,7 @@ elseif isfield(cfg.sourcemodel, 'filter')
   
 elseif isfield(cfg.sourcemodel, 'leadfield')
   ft_notice('using precomputed leadfields');
-  sourcemodel = keepfields(cfg.sourcemodel, {'pos', 'tri', 'dim', 'inside', 'leadfield', 'leadfielddimord', 'label', 'cfg', 'subspace'});
+  sourcemodel = keepfields(cfg.sourcemodel, {'pos', 'tri', 'dim', 'unit', 'coordsys', 'inside', 'leadfield', 'leadfielddimord', 'label', 'cfg', 'subspace'});
   
   if ~isfield(sourcemodel, 'label')
     ft_warning('the labels are missing for the precomputed leadfields, assuming that they were computed with the same channel selection');
@@ -1214,14 +1219,14 @@ end % if freq or timelock or comp data
 % clean up and collect the results
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-source = copyfields(sourcemodel, source, {'pos', 'tri', 'dim', 'inside', 'leadfield', 'leadfielddimord', 'label', 'cfg'});
+source = copyfields(sourcemodel, source, {'pos', 'tri', 'dim', 'unit', 'coordsys', 'inside', 'leadfield', 'leadfielddimord', 'label', 'cfg'});
 
 if exist('dip', 'var')
   % the fields in the dip structure might be more recent than those in the sourcemodel structure
-  source = copyfields(dip, source, {'pos', 'tri', 'dim', 'inside', 'leadfield', 'leadfielddimord', 'label', 'cfg'});
+  source = copyfields(dip, source, {'pos', 'tri', 'dim', 'unit', 'coordsys', 'inside', 'leadfield', 'leadfielddimord', 'label', 'cfg'});
   
   % prevent duplication of these fields when copying the content of dip into source.avg or source.trial
-  dip    = removefields(dip,       {'pos', 'tri', 'dim', 'inside', 'leadfield', 'leadfielddimord', 'label', 'cfg'});
+  dip    = removefields(dip,       {'pos', 'tri', 'dim', 'unit', 'coordsys', 'inside', 'leadfield', 'leadfielddimord', 'label', 'cfg'});
   
   if istrue(cfg.(cfg.method).keepfilter) && isfield(dip(1), 'filter')
     for k=1:numel(dip)

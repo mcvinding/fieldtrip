@@ -1,8 +1,9 @@
 function inspect_ft_trialfun_general
 
 % WALLTIME 00:10:00
-% MEM 2gb
+% MEM 1gb
 % DEPENDENCY ft_trialfun_general ft_trialfun_gui ft_trialfun_show
+% DATA public
 
 dataset = dccnpath('/home/common/matlab/fieldtrip/data/ftp/test/ctf/Subject01.ds');
 

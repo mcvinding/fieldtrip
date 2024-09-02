@@ -1,8 +1,9 @@
 function test_bug1249
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_componentanalysis ft_rejectcomponent
+% DATA private
 
 load(dccnpath('/home/common/matlab/fieldtrip/data/test/latest/raw/meg/preproc_ctf275.mat'));
 

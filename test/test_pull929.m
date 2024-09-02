@@ -1,8 +1,9 @@
 function test_pull929
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_scalpcurrentdensity ft_fetch_sens
+% DATA private
 
 %% load data
 % the data contains an ERP with 128 channels and 2001 time bins

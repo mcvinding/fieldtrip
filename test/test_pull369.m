@@ -1,8 +1,9 @@
 function test_pull369
 
 % WALLTIME 00:10:00
-% MEM 4gb
+% MEM 2gb
 % DEPENDENCY
+% DATA public
 
 %%
 

@@ -1,6 +1,9 @@
 function inspect_bug1474
 
+% WALLTIME 00:10:00
+% MEM 1gb
 % DEPENDENCY ft_rejectvisual
+% DATA private
 
 % this script tests ft_rejectvisual with cfg.method='summary' for the case
 % where the data only contains one channel

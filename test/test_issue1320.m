@@ -1,8 +1,9 @@
 function test_issue1320
 
 % WALLTIME 00:10:00
-% MEM 2gb
+% MEM 1gb
 % DEPENDENCY read_edf ft_read_header ft_read_data
+% DATA private
 
 filename = dccnpath('/home/common/matlab/fieldtrip/data/test/issue1320/000810000.230120.122109.Signals.Raw.edf');
 

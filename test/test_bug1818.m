@@ -1,11 +1,12 @@
 function test_bug1818
 
-% MEM 3gb
+% MEM 1gb
 % WALLTIME 00:10:00
 
 % test the reading function of meshes used for constructing SIMBIO FEM head models
 % see http://bugzilla.fieldtriptoolbox.org/show_bug.cgi?id=1818
 % DEPENDENCY ft_read_headshape ft_datatype_parcellation
+% DATA private
 
 filename = {
   dccnpath('/home/common/matlab/fieldtrip/data/test/bug1818/cube2mm3layervorwerk_ns_127_127_127.v') % vista

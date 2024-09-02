@@ -1,6 +1,7 @@
 function test_example_testing_bem_created_leadfields
 
-% MEM 4gb
+% DATA no
+% MEM 2gb
 % WALLTIME 00:10:00
 
 %

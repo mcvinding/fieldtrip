@@ -1,8 +1,9 @@
 function test_ricoh
 
-% MEM 6gb
+% MEM 4gb
 % WALLTIME 01:00:00
 % DEPENDENCY hasricoh isricohmegfile read_ricoh_data read_ricoh_event read_ricoh_header ricoh2grad
+% DATA private
 
 %% Test function for Ricoh *.con (Third-party exported) data
 %

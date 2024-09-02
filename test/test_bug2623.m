@@ -1,8 +1,9 @@
 function test_bug2623
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY
+% DATA private
 
 % Script tests whether parcellated data can be visualised in ft_sourceplot
 % 1. parcellated data is unparcelled

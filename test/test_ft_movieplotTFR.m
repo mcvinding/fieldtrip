@@ -1,8 +1,9 @@
 function test_ft_movieplotTFR
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_movieplotTFR ft_movieplotER
+% DATA public
 
 % the timelock and frequency analysis is based on the tutorials
 

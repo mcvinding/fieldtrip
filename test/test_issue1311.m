@@ -1,8 +1,9 @@
 function test_issue1311
 
 % WALLTIME 00:20:00
-% MEM 6gb
+% MEM 4gb
 % DEPENDENCY ft_definetrial ft_preprocessing
+% DATA public
 
 %%
 

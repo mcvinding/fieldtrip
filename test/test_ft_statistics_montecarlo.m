@@ -1,8 +1,9 @@
 function test_ft_statistics_montecarlo
 
-% MEM 4gb
+% MEM 2gb
 % WALLTIME 00:20:00
 % DEPENDENCY ft_statistics_montecarlo ft_timelockstatistics ft_freqstatistics ft_sourcestatistics clusterstat findcluster
+% DATA private
 
 % test the functionality of ft_statistics_montecarlo, in particular with respect to the clustering behavior.
 

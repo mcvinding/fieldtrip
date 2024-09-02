@@ -1,8 +1,9 @@
 function test_bug3417
 
 % WALLTIME 00:20:00
-% MEM 3gb
+% MEM 1gb
 % DEPENDENCY
+% DATA private
 
 % ... works fine on his computer, which has a 2012 version of FieldTrip and Matlab 2013a.
 % But when we try to run either a later version of Fieldtrip (e.g. 2015) or a later version

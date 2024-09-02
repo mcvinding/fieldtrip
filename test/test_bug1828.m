@@ -1,8 +1,9 @@
 function test_bug1828
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_convert_coordsys align_ctf2acpc
+% DATA private
 
 load(dccnpath('/home/common/matlab/fieldtrip/data/test/bug1828.mat'));
 

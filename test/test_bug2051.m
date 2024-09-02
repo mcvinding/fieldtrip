@@ -1,8 +1,9 @@
 function test_bug2051
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:10:00
 % DEPENDENCY ft_math
+% DATA private
 
 load(dccnpath('/home/common/matlab/fieldtrip/data/test/bug2051/source_coh_lft.mat'))
 

@@ -1,5 +1,6 @@
 function test_bug2800
 % DEPENDENCY project_elec
+% DATA private
 
 % WALLTIME 00:10:00
 % MEM 1gb
@@ -9,7 +10,7 @@ load(filename);
 
 % we need to cd into the private directory
 [ftver, ftpath] = ft_version;
-privatedir = dccnpath(fullfile(ftpath, 'private'));
+privatedir = fullfile(ftpath, 'private');
 cd(privatedir);
 
 [el,prj] = project_elec(elec.elecpos, vol.bnd(1).pnt, vol.bnd(1).tri);

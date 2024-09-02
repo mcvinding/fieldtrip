@@ -1,8 +1,9 @@
 function test_bug2834
 
-% MEM 2gb
+% MEM 1gb
 % WALLTIME 00:20:00
 % DEPENDENCY ft_sourceanalysis
+% DATA private
 
 % get some data
 filename = dccnpath('/home/common/matlab/fieldtrip/data/test/latest/freq/meg/freq_mtmconvol_powandcsd_ctf151.mat');

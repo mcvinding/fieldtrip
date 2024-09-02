@@ -1,7 +1,8 @@
 function test_example_ecog_ny
 
-% MEM 8gb
+% MEM 6gb
 % WALLTIME 00:30:00
+% DATA public
 
 %
 %% Analysis of high-gamma band signals in human ECoG

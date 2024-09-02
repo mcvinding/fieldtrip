@@ -1,8 +1,9 @@
 function test_example_effectsize
 
 % WALLTIME 00:20:00
-% MEM 4gb
+% MEM 2gb
 % DEPENDENCY ft_statistics_analytic ft_statfun_cohensd
+% DATA public
 
 
 %%
